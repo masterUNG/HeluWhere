@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -67,6 +68,24 @@ public class RegisterFragment extends Fragment {
                 myAlert.normalDialog("Have Space", "Please Fill All Blank");
             } else {
 //                No Space
+                try {
+
+                    MyConstant myConstant = new MyConstant();
+                    AddUserThread addUserThread = new AddUserThread(getActivity());
+                    addUserThread.execute(name, user, password, myConstant.getUrlAddUser());
+                    String result = addUserThread.get();
+                    Log.d("14FebV1", "result = " + result);
+
+                    if (Boolean.parseBoolean(result)) {
+                        getActivity().getSupportFragmentManager().popBackStack();
+                    } else {
+                        MyAlert myAlert = new MyAlert(getActivity());
+                        myAlert.normalDialog("Cannot Register", "Please Try Again");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
 
